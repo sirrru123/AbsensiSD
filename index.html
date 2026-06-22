@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Absensi SD</title>
+
+  <link rel="stylesheet" href="sd.css">
+</head>
+<body>
+
+<div class="container">
+
+  <!-- LOGIN -->
+  <div id="loginPage" class="card">
+
+    <h2>ABSENSI SISWA SD</h2>
+    <p>Primagama Sunter Indah</p>
+
+    <div id="notifLogin" class="notif hidden"></div>
+
+    <div class="form-group">
+      <label>Role</label>
+
+      <select id="roleSelect">
+        <option value="user">Siswa / Siswi</option>
+        <option value="parent">Orang Tua</option>
+        <option value="admin">Admin</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" id="passwordInput" placeholder="Masukkan Password">
+    </div>
+
+    <button class="btn-primary" onclick="login()">
+      Masuk
+    </button>
+
+  </div>
+
+  <!-- FORM ABSENSI -->
+  <div id="userPage" class="card hidden">
+
+    <div class="header-status">
+      <h2>Form Absensi SD</h2>
+
+      <button class="btn-logout" onclick="logout()">
+        Keluar
+      </button>
+    </div>
+
+    <div class="form-group">
+      <label>Nama Lengkap</label>
+      <input type="text" id="inputNama" placeholder="Masukkan Nama">
+    </div>
+
+    <div class="form-group">
+      <label>Kelas</label>
+
+      <select id="inputKelas">
+        <option value="">Pilih Kelas</option>
+
+        <option value="1">Kelas 1</option>
+        <option value="2">Kelas 2</option>
+        <option value="3">Kelas 3</option>
+        <option value="4">Kelas 4</option>
+        <option value="5">Kelas 5</option>
+        <option value="6">Kelas 6</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Keterangan</label>
+
+      <select id="inputKeterangan">
+        <option value="Hadir">Hadir</option>
+        <option value="Izin">Izin</option>
+        <option value="Sakit">Sakit</option>
+      </select>
+    </div>
+
+    <button class="btn-primary" onclick="submitAbsensi()">
+      Kirim Absensi
+    </button>
+
+  </div>
+
+  <!-- DASHBOARD -->
+  <div id="adminPage" class="card hidden">
+
+    <div class="header-status">
+      <h2>Dashboard Monitoring Absensi SD</h2>
+
+      <button class="btn-logout" onclick="logout()">
+        Keluar
+      </button>
+    </div>
+
+    <div class="stats-grid">
+
+      <div class="stat-box box-hadir">
+        <h3>Hadir</h3>
+        <p id="jumlahHadir">0</p>
+      </div>
+
+      <div class="stat-box box-izin">
+        <h3>Izin</h3>
+        <p id="jumlahIzin">0</p>
+      </div>
+
+      <div class="stat-box box-sakit">
+        <h3>Sakit</h3>
+        <p id="jumlahSakit">0</p>
+      </div>
+
+      <div class="stat-box box-total">
+        <h3>Total</h3>
+        <p id="jumlahTotal">0</p>
+      </div>
+
+    </div>
+
+    <div class="action-bar">
+
+      <div class="filter-group">
+        <label>Pilih Tanggal</label>
+
+        <input
+          type="date"
+          id="filterTanggal"
+          onchange="loadAbsensi()">
+      </div>
+
+      <button
+        id="btnExcel"
+        class="btn-excel"
+        onclick="downloadExcel()">
+
+        Download Excel
+
+      </button>
+
+    </div>
+
+    <!-- KELAS 1 -->
+    <div class="kelas-section">
+      <div class="kelas-title">KELAS 1</div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Nama Siswa</th>
+            <th>Riwayat</th>
+            <th class="kolom-aksi">Aksi</th>
+          </tr>
+        </thead>
+
+        <tbody id="tableBody1"></tbody>
+      </table>
+    </div>
+
+    <!-- KELAS 2 -->
+    <div class="kelas-section">
+      <div class="kelas-title">KELAS 2</div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Nama Siswa</th>
+            <th>Riwayat</th>
+            <th class="kolom-aksi">Aksi</th>
+          </tr>
+        </thead>
+
+        <tbody id="tableBody2"></tbody>
+      </table>
+    </div>
+
+    <!-- KELAS 3 -->
+    <div class="kelas-section">
+      <div class="kelas-title">KELAS 3</div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Nama Siswa</th>
+            <th>Riwayat</th>
+            <th class="kolom-aksi">Aksi</th>
+          </tr>
+        </thead>
+
+        <tbody id="tableBody3"></tbody>
+      </table>
+    </div>
+
+    <!-- KELAS 4 -->
+    <div class="kelas-section">
+      <div class="kelas-title">KELAS 4</div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Nama Siswa</th>
+            <th>Riwayat</th>
+            <th class="kolom-aksi">Aksi</th>
+          </tr>
+        </thead>
+
+        <tbody id="tableBody4"></tbody>
+      </table>
+    </div>
+
+    <!-- KELAS 5 -->
+    <div class="kelas-section">
+      <div class="kelas-title">KELAS 5</div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Nama Siswa</th>
+            <th>Riwayat</th>
+            <th class="kolom-aksi">Aksi</th>
+          </tr>
+        </thead>
+
+        <tbody id="tableBody5"></tbody>
+      </table>
+    </div>
+
+    <!-- KELAS 6 -->
+    <div class="kelas-section">
+      <div class="kelas-title">KELAS 6</div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Nama Siswa</th>
+            <th>Riwayat</th>
+            <th class="kolom-aksi">Aksi</th>
+          </tr>
+        </thead>
+
+        <tbody id="tableBody6"></tbody>
+      </table>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- MODAL HISTORY -->
+<div id="historyModal" class="modal-overlay hidden">
+
+  <div class="modal-box">
+
+    <h3 id="historyNama">
+      History Absensi
+    </h3>
+
+    <div class="modal-table-wrapper">
+
+      <table class="modal-table">
+
+        <thead>
+          <tr>
+            <th>Tanggal & Waktu</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+
+        <tbody id="historyBody"></tbody>
+
+      </table>
+
+    </div>
+
+    <button
+      class="btn-close-modal"
+      onclick="tutupHistory()">
+
+      Tutup
+
+    </button>
+
+  </div>
+
+</div>
+
+<script type="module" src="sd.js"></script>
+
+</body>
+</html>
